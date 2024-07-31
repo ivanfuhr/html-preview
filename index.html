@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Preview</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        margin: 0;
+        background-color: #1e1e1e;
+      }
+      #editor {
+        height: 400px;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs/loader.js"></script>
+    <script>
+      window.onload = function () {
+        require.config({
+          paths: {
+            vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1/min/vs",
+          },
+        });
+        require(["vs/editor/editor.main"], function () {
+          window.editor = monaco.editor.create(
+            document.getElementById("editor"),
+            {
+              value: "",
+              language: "html",
+              theme: "vs-dark",
+              automaticLayout: true,
+            }
+          );
+
+          editor.onDidChangeModelContent(function () {
+            const htmlContent = editor.getValue();
+            const preview = document.getElementById("preview");
+            preview.srcdoc = htmlContent;
+          });
+        });
+      };
+    </script>
+  </head>
+  <body
+    class="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center"
+    style="background-color: #1e1e1e"
+  >
+    <header class="w-full p-4 text-center" style="background-color: #1e1e1e">
+      <h1 class="text-2xl font-bold text-white">HTML Preview</h1>
+    </header>
+    <main class="flex flex-col items-center w-full p-4">
+      <div id="editor" class="w-full max-w-4xl border rounded"></div>
+      <iframe
+        id="preview"
+        class="w-full max-w-4xl h-96 border mt-4"
+        style="background-color: #1e1e1e"
+      ></iframe>
+    </main>
+  </body>
+</html>
